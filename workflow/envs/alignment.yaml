@@ -15,4 +15,4 @@ dependencies:
  - ensembl-vep=108.2
  - snakemake=7.32.4
  - samtools=1.15.1
-
+ - cramino
