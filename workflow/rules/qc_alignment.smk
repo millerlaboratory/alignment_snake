@@ -23,7 +23,7 @@ rule run_whatshap:
     conda: "../envs/alignment.yaml"
     shell:
         """
-        whatshap stats --tsv={output.stats} {input}
+        whatshap stats --tsv={output.stats} {input.vcf}
         """
 
 rule grep_all_cramino:
