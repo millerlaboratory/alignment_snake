@@ -1,9 +1,13 @@
-# Snakemake workflow for ONT WGS and Adaptive Sampling Alignment
+# Snakemake workflow for ONT WGS and Adaptive Sampling Alignment: Explicit Conda Branch
+
+This branch uses the .yaml files in the /env folder to create new conda environments each time this repository is cloned. Only use this if running the workflow not on McClintock or Franklin.
 
 This workflow uses unaligned called bam files of ONT data to produce aligned bam files, SNV calls, SV calls, CNV calls, VEP annotations, and QC statistics. All input bams should be checked for quality control prior to using this workflow.
 
+*Special note: You must run `vep_install` within the active `vep-111.0` conda environment to complete installation. Make sure to install all of the plugins in `annotation.smk` or edit `run_vep_111` to exclude them. Update the config file with your cache and plugins directory location.*
 
-The master branch is set up to use conda environments assumed to be on the user's path. Switch to the `conda_explicit` branch to use the .yamls in the /env directory and then modify the `config.yaml` on that branch. You could also use the yamls to make conda environments on your system and then use the `config_mcclintock.yaml` on the master branch. You should only do this if running on a new server. 
+*Longphase: Longphase must be installed on your path or within the path of the `alignmentCalling` environment. There is currently no conda available for this tool.*
+
 
 ## Usage
 ```
@@ -16,10 +20,9 @@ snakemake -p --use-conda --cores 30
 2. Edit `Snakefile` to include the appropriate rules. Most likely this is already set up correctly. `get_targets` generates alignment files for all samples in the file `config/targets.txt`.
     - The workflow searches for bam files with a matching prefix (M[0-9]{5}) in the directory (`input_dir`) specified in the config file.
     - Optionally change `explicitLibraries` to `true` to specify a list of bam files in the `config/targets.txt` instead
-    - choose to include either `config/config_mcclintock.yaml` or `config/config_franklin.yaml` depending on which server you would like to run on.
 3. Create a sample database file, like  `config/NSC0000_example_config.tsv` with your sample information. All fields are required. 
 4. Edit `config/targets.txt` to include only the samples you wish to generate alignments for.
-5. Edit `config/config_mcclintock.yaml` or `config/config_franklin.yaml` depending on which server you would like to run on.
+5. Edit `config.yaml`
     - if running on a new server, update paths for all reference data, tools, and input/output directories.
 6. Run!
 
