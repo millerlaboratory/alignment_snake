@@ -3,33 +3,33 @@ __use_yte__: true
 # input configuration
 server: franklin
 #The sample database file below MUST contain th
-samples: config/NSC0000_example_config.tsv
-targetfile: config/targets.txt
-project: NSC0000_example
+samples: config/20241004_config.tsv
+targetfile: config/20241004_targets.txt
+project: test_freeze
 #
 ## status notification email address. Comma separated is OK.
 #
 email: mgaley@uw.edu
 #
 ## naming customization
-prefix_regex: "{SAMPLEID}-NP-{STRATEGY}_{PORE}-{PROJECT_ID}-{OUTSIDE_ID}_{GENE}-{METH}-{MB}"
-prefix_lookup: "{sid}-NP-{strat}_{pore}-{project}-{oid}_{gene}-{meth}-{member}"
+prefix_regex: "{SAMPLEID}-ONT-hg38-{FLOWCELL}-{KIT}-{METH}"
+prefix_lookup: "{sid}-ONT-hg38-{flow}-{kit}-{meth}"
 ### the first value of sampleDB_prefix_column_names is processed as the index column.
-sampleDB_prefix_format_columns: "sid,strat,pore,project,oid,gene,meth,member"
-sampleDB_prefix_column_names: "SampleID,Strategy,Flowcell,Project,ExternalID,TargetGene,Methylation,Member"
+sampleDB_prefix_format_columns: "sid,flow,kit,meth"
+sampleDB_prefix_column_names: "SampleID,Flowcell,Kit,Methylation"
 #
 ## input bam file naming string
-basecalled_bam_string: "{wildcards.SAMPLEID}*{wildcards.STRATEGY}*"
+basecalled_bam_string: "{wildcards.SAMPLEID}*{wildcards.FLOWCELL}.{wildcards.KIT}*"
 #
 # change explicitLibraries to true to specify library paths in target file rather than sample identifiers
 explicitLibraries: false
 #
-input_dir: /waldo/bam_files_unaligned
-working_dir: ?"/data/alignments/" + this["project"]
-final_dir: ?"/n/alignments/" + this["project"]
+input_dir: /waldo/1000G_bamFilesUnalignedMerged
+working_dir: /n/1000g_working
+final_dir: /n/1000g/align-minimap2-2.24-hg38/test_freeze
 #
 # resources
-threads: 50
+threads: 20
 #
 # target specification
 # set allTargets to true to generate all possible files
@@ -44,12 +44,12 @@ outputs:
   clair3: true
   sniffles: true
   svim: false
-  cuteSV: true
+  cuteSV: false
   CNVcalls: true
-  VEP: true
+  VEP: false
   phaseQC: true
   basicQC: true
-  report: true
+  report: false
   phaseIndels: true
 #
 transcriptomeOutputs:
